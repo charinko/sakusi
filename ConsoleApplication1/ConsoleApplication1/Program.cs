@@ -39,6 +39,11 @@ namespace ConsoleApplication1
             fs.Close();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="fileName"></param>
         public static void changeMero(double[] i, string fileName)
         {
             FileStream fs = new FileStream(fileName, FileMode.Append);
@@ -60,9 +65,9 @@ namespace ConsoleApplication1
                     }
                 }
             }
-            foreach(char item in s)
+            foreach (char item in t)
             {
-                s = Convert.ToString(t[item]);
+                s =s + Convert.ToString(t[item]);
             }
 
             writer.WriteLine(s);
@@ -80,31 +85,36 @@ namespace ConsoleApplication1
             writer.Close();
             fs.Close();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public static double[][] includeFile(string fileName)
         {
             //signal
             List<double[]> y = new List<double[]>();
 
-            using (StreamReader koeFile = new StreamReader(fileName))
+                using (StreamReader koeFile = new StreamReader(fileName))
             {
-                while (koeFile.Peek() != -1)
-                {
-                    List<double> tmp = new List<double>();
-
-                    //
-                    while(koeFile.EndOfStream == false)
-                    {
-                        string line = koeFile.ReadLine();
-                        string[] fields = line.Split(',');
-                        foreach (string item in fields) {
+                List<double> tmp = new List<double>();
+                //
+                while (koeFile.EndOfStream == false)
+               {
+                    foreach (string item in koeFile.ReadLine().Split(',')) {
+                        if (item != "")
+                        {
                             tmp.Add(Convert.ToDouble(item));
                         }
+                        else
+                        {
+                            tmp.Add(0);
+                        }
                     }
-                    
-
-                    //
-                    y.Add(tmp.ToArray());
                 }
+                    
+                //
+                y.Add(tmp.ToArray());
             }
             return y.ToArray();
         }
@@ -116,10 +126,11 @@ namespace ConsoleApplication1
             //Console.ReadKey();
             changeHead(@"C:\Users\チャリンコ\Desktop\test.txt");
             y = includeFile(@"C:\Users\チャリンコ\Desktop\targetarray.txt");
-            for(int i = 0; i < y.Length; i++)
+            for (int i = 0; i < y.Length; i++)
             {
                 changeMero(y[i], @"C:\Users\チャリンコ\Desktop\test.txt");
             }
+
             
         }
     }
