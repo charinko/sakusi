@@ -27,81 +27,73 @@ namespace ConsoleApplication1
         /// 
         /// </summary>
         /// <param name="fileName">出力先のファイルです。</param>
-        public static void changeHead(string fileName)
+        public static void changeHead(string fileName,StreamWriter writer)
         {
-            FileStream fs = new FileStream(fileName, FileMode.Create);
-            StreamWriter writer = new StreamWriter(fs);
 
             writer.WriteLine(fileName);
             writer.WriteLine("0,0,120,0,0");
-
-            writer.Close();
-            fs.Close();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="i"></param>
+        /// <param name="line"></param>
         /// <param name="fileName"></param>
-        public static void changeMero(double[] i, string fileName)
+        public static void changeMero(double[] line, StreamWriter writer)
         {
-            FileStream fs = new FileStream(fileName, FileMode.Append);
-            StreamWriter writer = new StreamWriter(fs);
-
             string s = "";
-            int[] t = new int[list.Length];
-            for (int n = 0; n < list.Length; n++)
+            int[] oto = new int[list.Length];
+            for (int n = 0; n < line.Length; n++)
             {
-                for (int j = 0; j < i.Length; j++)
+                for (int j = 0; j < list.Length; j++)
                 {
-                    if (i[j] == list[n])
+                    if (line[n] == list[j])
                     {
-                        t[n] = 5;
+                        oto[n] = 5;
+                        break;
                     }
                     else
                     {
-                        t[n] = 0;
+                        oto[n] = 0;
                     }
                 }
+
             }
-            foreach (char item in t)
+            foreach (int item in oto)
             {
-                s =s + Convert.ToString(t[item]);
+                s = s + Convert.ToString(item);
             }
 
             writer.WriteLine(s);
 
             string f = "";
-            for(int n = 0; n < list.Length; n++)
+            for (int n = 0; n < list.Length; n++)
             {
-                f = f + "-";
+                f = f + "0";
             }
 
             for (int m = 0; m < 6; m++)
             {
                 writer.WriteLine(f);
             }
-            writer.Close();
-            fs.Close();
+            //writer.Close();
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static double[][] includeFile(string fileName)
+        public static double[][] includeFile(string filename)
         {
-            //signal
-            List<double[]> y = new List<double[]>();
-
-                using (StreamReader koeFile = new StreamReader(fileName))
+            using (StreamReader reader = new StreamReader(filename))
             {
-                List<double> tmp = new List<double>();
-                //
-                while (koeFile.EndOfStream == false)
-               {
-                    foreach (string item in koeFile.ReadLine().Split(',')) {
+                //signal
+                List<double[]> y = new List<double[]>();
+                while (reader.EndOfStream == false)
+                {
+                    List<double> tmp = new List<double>();
+                    foreach (string item in reader.ReadLine().Split(','))
+                    {
                         if (item != "")
                         {
                             tmp.Add(Convert.ToDouble(item));
@@ -110,13 +102,12 @@ namespace ConsoleApplication1
                         {
                             tmp.Add(0);
                         }
+
                     }
+                    y.Add(tmp.ToArray());
                 }
-                    
-                //
-                y.Add(tmp.ToArray());
+                return y.ToArray();
             }
-            return y.ToArray();
         }
 
 
@@ -124,14 +115,22 @@ namespace ConsoleApplication1
         {
             //Console.WriteLine(changeMero(list[0]));
             //Console.ReadKey();
-            changeHead(@"C:\Users\チャリンコ\Desktop\test.txt");
-            y = includeFile(@"C:\Users\チャリンコ\Desktop\targetarray.txt");
-            for (int i = 0; i < y.Length; i++)
+            string root = @"..\..\";
+            string readfilename = root + @"音フォルダ\targetarray.txt";
+            string outfilename = root + @"音フォルダ\test.txt";
+            y = includeFile(readfilename);
+            using (FileStream fw = new FileStream(outfilename, FileMode.Create))
             {
-                changeMero(y[i], @"C:\Users\チャリンコ\Desktop\test.txt");
+                using (StreamWriter writer = new StreamWriter(fw))
+                {
+                    changeHead(@"..\..\音フォルダ\test.txt", writer);
+                    for (int i = 0; i < y.Length; i++)
+                    {
+                        changeMero(y[i], writer);
+                    }
+                }
             }
-
-            
         }
     }
+
 }
