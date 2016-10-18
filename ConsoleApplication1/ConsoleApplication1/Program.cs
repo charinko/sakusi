@@ -54,7 +54,7 @@ namespace ConsoleApplication1
                     }
                     else
                     {
-                        oto[n] = 0;
+                        oto[j] = 0;
                     }
                 }
 
