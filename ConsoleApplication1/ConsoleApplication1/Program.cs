@@ -49,7 +49,7 @@ namespace ConsoleApplication1
                 {
                     if (line[n] == list[j])
                     {
-                        oto[n] = 5;
+                        oto[j] = 5;
                         break;
                     }
                     else
