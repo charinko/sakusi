@@ -42,48 +42,35 @@ namespace ConsoleApplication1
         public static void changeMero(double[] line, StreamWriter writer)
         {
             string s = "";
-            int[] oto = new int[list.Length];
+            string[] oto = new string[list.Length];
             for (int n = 0; n < line.Length; n++)
             {
                 for (int j = 0; j < list.Length; j++)
                 {
                     if (line[n] == list[j])
                     {
-                        oto[j] = 5;
-                        break;
+                        oto[j] = "5";
                     }
                     else
                     {
-                        if (oto[j] == 5)
+                        if (oto[j] == "5")
                         {
-                            oto[j] = 5;
+                            oto[j] = "5";
                         }
                         else
                         {
-                            oto[j] = 0;
+                            oto[j] = "-";
                         }
                     }
                 }
 
             }
-            foreach (int item in oto)
+            foreach (string item in oto)
             {
                 s = s + Convert.ToString(item);
             }
 
             writer.WriteLine(s);
-
-            string f = "";
-            for (int n = 0; n < list.Length; n++)
-            {
-                f = f + "0";
-            }
-
-            for (int m = 0; m < 6; m++)
-            {
-                writer.WriteLine(f);
-            }
-            //writer.Close();
         }
         /// <summary>
         /// 
@@ -134,6 +121,10 @@ namespace ConsoleApplication1
                     for (int i = 0; i < y.Length; i++)
                     {
                         changeMero(y[i], writer);
+                        if (i % 24 == 0)
+                        {
+                            writer.WriteLine("0000000000000000000000000000000000000000000000000000000000000000000000009");
+                        }
                     }
                 }
             }
