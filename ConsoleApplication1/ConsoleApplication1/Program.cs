@@ -110,7 +110,7 @@ namespace ConsoleApplication1
             //Console.WriteLine(changeMero(list[0]));
             //Console.ReadKey();
             string root = @"..\..\";
-            string readfilename = root + @"音フォルダ\targetarray.txt";
+            string readfilename = root + @"..\..\..\AudioProcessing\BasicProcessing\BasicProcessing\音ファイル\testVer1.txt";
             string outfilename = root + @"音フォルダ\test.txt";
             y = includeFile(readfilename);
             using (FileStream fw = new FileStream(outfilename, FileMode.Create))
@@ -121,10 +121,6 @@ namespace ConsoleApplication1
                     for (int i = 0; i < y.Length; i++)
                     {
                         changeMero(y[i], writer);
-                        if (i % 24 == 0)
-                        {
-                            writer.WriteLine("0000000000000000000000000000000000000000000000000000000000000000000000009");
-                        }
                     }
                 }
             }
